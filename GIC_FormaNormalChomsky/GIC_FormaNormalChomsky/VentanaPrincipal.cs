@@ -24,7 +24,6 @@ namespace FNC
             butPaso4.Enabled = false;
             butPaso5.Enabled = false;
             butPaso6.Enabled = false;
-            butCYK.Enabled = false;
 
             txtNoTerminables.ReadOnly = true;
             txtNoAlcanzables.ReadOnly = true;
@@ -187,10 +186,8 @@ namespace FNC
                 txtSalida.Text = g.ToString();
 
                 butPaso6.Enabled = false;
-                MessageBox.Show("La gramatica ha sido convertida a su Forma Normal de Chomsky" + Environment.NewLine + 
-                                "Ahora puede comprobar si la gramatica genera alguna cadena especifica con el boton Algoritmo CYK");
+                MessageBox.Show("¡Se ha generado una GIC G`en Forma normal de Chomsky    equivalente a G de forma exitosa!" + Environment.NewLine );
 
-                butCYK.Enabled = true;
             }
             catch(Exception)
             {
@@ -229,7 +226,6 @@ namespace FNC
             comboBoxConjunto.Enabled = true;
             comboBoxConjunto.Items.Clear();
 
-            butCYK.Enabled = false;
         }
 
         public Gramatica darGramatica()
@@ -237,6 +233,24 @@ namespace FNC
             return g;
         }
 
-     
+        private void VentanaPrincipal_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Label8_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
