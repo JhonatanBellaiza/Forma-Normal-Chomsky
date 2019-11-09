@@ -50,12 +50,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Regla.cs" />
-    <Compile Include="VentanaCYK.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="VentanaCYK.designer.cs">
-      <DependentUpon>VentanaCYK.cs</DependentUpon>
-    </Compile>
     <Compile Include="VentanaPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -71,9 +65,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="VentanaCYK.resx">
-      <DependentUpon>VentanaCYK.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="VentanaPrincipal.resx">
       <DependentUpon>VentanaPrincipal.cs</DependentUpon>
     </EmbeddedResource>

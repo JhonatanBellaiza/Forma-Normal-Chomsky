@@ -13,7 +13,6 @@ namespace FNC
     public partial class VentanaPrincipal : Form
     {
         private Gramatica g;
-        private VentanaCYK ventanaCYK;
         public VentanaPrincipal()
         {
             InitializeComponent();
@@ -238,14 +237,6 @@ namespace FNC
             return g;
         }
 
-        private void butCYK_Click(object sender, EventArgs e)
-        {
-            if(ventanaCYK != null)
-            {
-                ventanaCYK.Close();
-            }
-            ventanaCYK = new VentanaCYK(this);
-            ventanaCYK.Show();
-        }
+     
     }
 }

@@ -251,7 +251,6 @@
             this.butCYK.TabIndex = 32;
             this.butCYK.Text = "Algoritmo CYK";
             this.butCYK.UseVisualStyleBackColor = true;
-            this.butCYK.Click += new System.EventHandler(this.butCYK_Click);
             // 
             // VentanaPrincipal
             // 
