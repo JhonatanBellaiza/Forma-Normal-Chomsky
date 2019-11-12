@@ -6,37 +6,51 @@ using System.Threading.Tasks;
 
 namespace FNC
 {
-    /// <summary>
-    /// Clase que representa una regla de una gramatica
-    /// </summary>
+    /*
+     * <summary>
+     * Clase que representa una regla de una gramatica
+     * </summary>
+     */
     public class Regla
     {
-        //CONSTANTES --------------------------------------------------------------
+        /******************************
+         **********CONSTANTES**********
+         ******************************/
 
-        //Representa el caracter nulo de una gramatica.
+        /*
+         * Representa el caracter nulo de una gramatica.
+         */
         public const char LAMBDA = '&';
 
-        //ATRIBUTOS ---------------------------------------------------------------
+        /*****************************
+         **********ATRIBUTOS**********
+         *****************************/
         public char generador;
         public List<string> producciones;
 
-        //CONSTRUCTOR -----------------------------------------------------------------
+        /*******************************
+         **********CONSTRUCTOR**********
+         *******************************/
         public Regla(char pgenerador, List<string> pproducciones)
         {
             generador = pgenerador;
             producciones = pproducciones;
         }
 
-        //METODOS ---------------------------------------------------------------------
+        /***************************
+         **********METODOS**********
+         ***************************/
 
-        /// <summary>
-        /// Determina si la regla es terminable por la presencia de una produccion lambda o por una produccion 
-        /// con solo terminales
-        /// </summary>
-        /// <returns>
-        /// Retorna true si la regla es terminable por tener una produccion lambda o una produccion
-        /// con solo terminales. En caso contrario, retorna false
-        /// </returns>
+        /*
+         * <summary>
+         * Determina si la regla es terminable por la presencia de una produccion lambda o por una produccion 
+         * con solo terminales
+         * </summary>
+         * <returns>
+         * Retorna true si la regla es terminable por tener una produccion lambda o una produccion
+         * con solo terminales. En caso contrario, retorna false
+         * </returns>
+         */
         public bool esTerminablePorProduccion()
         {
             bool respuesta = false;
@@ -93,12 +107,14 @@ namespace FNC
             return respuesta;
         }
 
-        /// <summary>
-        /// Determina las variables alcanzables directas, es decir, aquellas variables que estan en las producciones
-        /// </summary>
-        /// <returns>
-        /// Retorna una lista con todas las variables en las producciones.
-        /// </returns>
+        /*
+         * <summary>
+         * Determina las variables alcanzables directas, es decir, aquellas variables que estan en las producciones
+         * </summary>
+         * <returns>
+         * Retorna una lista con todas las variables en las producciones.
+         * </returns>
+         */
         public List<char> variablesAlcanzables()
         {
             List<char> variablesAlcanzables = new List<char>();
@@ -112,12 +128,14 @@ namespace FNC
             return variablesAlcanzables;
         }
 
-        /// <summary>
-        /// Determina si la regla es anulable por tener una produccion lambda.
-        /// </summary>
-        /// <returns>
-        /// Retorna true si la regla contiene una produccion lambda. En caso contrario, retorna false.
-        /// </returns>
+        /*
+         * <summary>
+         * Determina si la regla es anulable por tener una produccion lambda.
+         * </summary>
+         * <returns>
+         * Retorna true si la regla contiene una produccion lambda. En caso contrario, retorna false.
+         * </returns>
+         */
         public bool esAnuablePorProduccion()
         {
             bool respuesta = false;
@@ -134,17 +152,19 @@ namespace FNC
             return respuesta;
         }
 
-        /// <summary>
-        /// Determina si la regla es anulable por el hecho de tener una produccion con una variable anulable que 
-        /// la lleva a ser anulable
-        /// </summary>
-        /// <param name="anulables">
-        /// Lista con todas las variables anulables
-        /// </param>
-        /// <returns>
-        /// Retorna true en caso de que la regla sea anulable por tener una produccion con una variable anulable que la
-        /// lleva a ser anulable. En caso contrario, retorna false.
-        /// </returns>
+        /*
+         * <summary>
+         * Determina si la regla es anulable por el hecho de tener una produccion con una variable anulable que 
+         * la lleva a ser anulable
+         * </summary>
+         * <param name="anulables">
+         * Lista con todas las variables anulables
+         * </param>
+         * <returns>
+         * Retorna true en caso de que la regla sea anulable por tener una produccion con una variable anulable que la
+         * lleva a ser anulable. En caso contrario, retorna false.
+         * </returns>
+         */
         public bool esAnulablePorVariableAnulable(List<char> anulables)
         {
             bool respuesta = false;
@@ -164,12 +184,14 @@ namespace FNC
             return respuesta;
         }
 
-        /// <summary>
-        /// Obtiene todas las producciones unitarias
-        /// </summary>
-        /// <returns>
-        /// Lista con todas las producciones unitarias.
-        /// </returns>
+        /*
+         * <summary>
+         * Obtiene todas las producciones unitarias
+         * </summary>
+         * <returns>
+         * Lista con todas las producciones unitarias.
+         * </returns>
+         */
         public List<char> produccionesUnitarias()
         {
             List<char> respuesta = new List<char>();
@@ -189,14 +211,16 @@ namespace FNC
             return respuesta;
         }
 
-        /// <summary>
-        /// metodo utilizado para:
-        /// 1. eliminar producciones con variables no terminables
-        /// 2. eliminar producciones con variables no alcanzables
-        /// </summary>
-        /// <param name="variables">
-        /// Lista con las variables
-        /// </param>
+        /*
+         * <summary>
+         * Metodo utilizado para:
+         * 1. eliminar producciones con variables no terminables
+         * 2. eliminar producciones con variables no alcanzables
+         * </summary>
+         * <param name="variables">
+         * Lista con las variables
+         * </param>
+         */
         public void eliminarProduccionesConLasVariables(List<char> variables)
         {
             List<string> eliminar = new List<string>();
@@ -229,10 +253,14 @@ namespace FNC
         {
             List<string> nuevas = new List<string>();
 
-            //se evalua cada produccion
+            /*
+             * Se evalua cada produccion
+             */
             foreach(string produccion in producciones)
             {
-                //saco las anulables de la produccion y sus posiciones en la misma
+                /*
+                 * Se obtienen las anulables de la produccion y sus posiciones en la misma
+                 */
                 List<char> lista = new List<char>();
                 List<int> posiciones = new List<int>();
                 for(int x = 0; x < produccion.Count(); x++)
@@ -245,19 +273,28 @@ namespace FNC
                     }
                 }
               
-                //verifico que existan anulables
+                /*
+                 * Se verifica que existan anulables
+                 */
                 if(lista.Count() > 0)
                 {
-                    //se obtienen las opciones en que se pueden anular las variables
+                    /*
+                     * Se obtienen las opciones en que se pueden anular las variables
+                     */
                     int numeroAnulables = lista.Count();
                     int limite = (int) Math.Pow(2, numeroAnulables);
                     List<string> opciones = generarListaDeBinarios(numeroAnulables, limite);
                     
-                    //se analiza cada opcion
+                    /*
+                     * Se analiza cada opcion
+                     */
                     for (int i = 0; i < opciones.Count(); i++)
                     {
                         string nuevaProduccion = produccion;
-                        string opcion = opciones.ElementAt(i); //es un numero binario
+                        /*
+                         * Este un numero binario
+                         */
+                        string opcion = opciones.ElementAt(i); 
 
                         List<int> posicionesAEliminar = new List<int>();
                         for (int j = 0; j < opcion.Count(); j++)
@@ -274,7 +311,9 @@ namespace FNC
 
                         if (posicionesAEliminar.Count() > 0)
                         {
-                            //modifico la produccion con las posiciones a eliminar
+                            /*
+                             * Se modifican la produccion con las posiciones a eliminar
+                             */
                             int contador = 0;
                             for (int w = 0; w < posicionesAEliminar.Count(); w++)
                             {
@@ -305,18 +344,20 @@ namespace FNC
             producciones = producciones.Union(nuevas).ToList<string>();
         }
 
-        /// <summary>
-        /// Genera una lista de numeros binarios en formato string
-        /// </summary>
-        /// <param name="componentes">
-        /// indica cuantos componentes(tamaño) debe tener cada binario generado
-        /// </param>
-        /// <param name="limite">
-        /// indica cuantos binarios generar
-        /// </param>
-        /// <returns>
-        /// Lista de numeros binarios en formato string
-        /// </returns>
+        /*
+         * <summary>
+         * Genera una lista de numeros binarios en formato string
+         * </summary>
+         * <param name="componentes">
+         * indica cuantos componentes(tamaño) debe tener cada binario generado
+         * </param>
+         * <param name="limite">
+         * indica cuantos binarios generar
+         * </param>
+         * <returns>
+         * Lista de numeros binarios en formato string
+         * </returns>
+         */
         public List<string> generarListaDeBinarios(int componentes, int limite)
         {
             List<string> lista = new List<string>();
@@ -331,18 +372,20 @@ namespace FNC
 
         }
 
-        /// <summary>
-        /// Convierte un numero en formato decimal a su formato en binario
-        /// </summary>
-        /// <param name="numero">
-        /// Numero decimal
-        /// </param>
-        /// <param name="componentes">
-        /// indica cuantos componentes (tamaño) debe tener el binario generado
-        /// </param>
-        /// <returns>
-        /// String que representa el numero binario
-        /// </returns> 
+        /*
+         * <summary>
+         * Convierte un numero en formato decimal a su formato en binario
+         * </summary>
+         * <param name="numero">
+         * Numero decimal
+         * </param>
+         * <param name="componentes">
+         * indica cuantos componentes (tamaño) debe tener el binario generado
+         * </param>
+         * <returns>
+         * String que representa el numero binario
+         * </returns> 
+         */
         public string decimalABinario(int numero, int componentes)
         {
             string sal = "";
@@ -368,12 +411,14 @@ namespace FNC
             return sal;
         }
 
-        /// <summary>
-        /// Determina cuales son las producciones no unitarias
-        /// </summary>
-        /// <returns>
-        /// Lista con las producciones no unitarias
-        /// </returns>
+        /*
+         * <summary>
+         * Determina cuales son las producciones no unitarias
+         * </summary>
+         * <returns>
+         * Lista con las producciones no unitarias
+         * </returns>
+         */
         public List<string> darProduccionesNoUnitarias()
         {
             List<string> respuesta = new List<string>();
@@ -398,31 +443,36 @@ namespace FNC
             return respuesta;
         }
 
-        /// <summary>
-        /// Modifica el atributo producciones añadiendo nuevas producciones
-        /// </summary>
-        /// <param name="nuevasProducciones">
-        /// Lista de string con las nuevas producciones a añadir.
-        /// </param>
+        /*
+         * <summary>
+         * Modifica el atributo producciones añadiendo nuevas producciones
+         * </summary>
+         * <param name="nuevasProducciones">
+         * Lista de string con las nuevas producciones a añadir.
+         * </param>
+         */
         public void modificarProducciones(List<string> nuevasProducciones)
         {
             producciones = producciones.Union(nuevasProducciones).ToList<string>();
         }
 
-        /// <summary>
-        /// Elimina las producciones unitarias
-        /// </summary>
+        /*
+         * <summary>
+         * Elimina las producciones unitarias
+         * </summary>
+         */
         public void eliminarProduccionesUnitarias()
         {
             producciones = darProduccionesNoUnitarias();
         }
 
-        /// <summary>
-        /// Convierte todas las producciones en producciones binarias
-        /// </summary>
-        /// <param name="g">
-        /// Referencia al Objeto Gramatica al cual pertenece este objeto Regla
-        /// </param>
+        /* <summary>
+         * Convierte todas las producciones en producciones binarias
+         * </summary>
+         * <param name="g">
+         * Referencia al Objeto Gramatica al cual pertenece este objeto Regla
+         * </param>
+         */
         public void obtenerProduccionesBinarias(Gramatica g)
         {
             List<string> nuevas = new List<string>();
@@ -441,7 +491,9 @@ namespace FNC
 
                     if (regla != null)
                     {
-                        //Reemplazo esos caracteres por la variable que los genera
+                        /*
+                         * Reemplazo esos caracteres por la variable que los genera
+                         */
 
                         produccion = produccion.RemoveAt(produccion.Count() - 1);
                         produccion = produccion.RemoveAt(produccion.Count() - 1);
@@ -450,17 +502,23 @@ namespace FNC
                     }
                     else
                     {
-                        //creo la produccion nueva
+                        /*
+                         * Se crea la produccion nueva
+                         */
 
                         char variable = g.variablesPosibles.ElementAt(0);
                         g.variablesPosibles.RemoveAt(0); //menos variables
                         g.variables.Add(variable);
 
-                        //agrego regla
+                        /*
+                         * Se agrega la regla
+                         */
                         Regla nueva = new Regla(variable, new List<string> { nuevaProduccion });
                         g.nuevasReglas.Add(nueva);
 
-                        //modifico produccion
+                        /*
+                         * Se modifica la produccion
+                         */
                         produccion = produccion.RemoveAt(produccion.Count() - 1);
                         produccion = produccion.RemoveAt(produccion.Count() - 1);
                         produccion = produccion + variable.ToString();
@@ -478,13 +536,15 @@ namespace FNC
             
         }
 
-        /// <summary>
-        /// Determina si la regla es binaria.
-        /// Una regla es binaria si todas sus producciones constan de dos variables o 1 terminal
-        /// </summary>
-        /// <returns>
-        /// Retorna true si la regla es binaria. En caso contrario, retorna false
-        /// </returns>    
+        /*
+         * <summary>
+         * Determina si la regla es binaria.
+         * Una regla es binaria si todas sus producciones constan de dos variables o 1 terminal
+         * </summary>
+         * <returns>
+         * Retorna true si la regla es binaria. En caso contrario, retorna false
+         * </returns>    
+         */
         public bool esBinaria()
         {
             bool respuesta = true;
@@ -496,7 +556,10 @@ namespace FNC
                 if(produccion.Count() == 1)
                 {
                     char caracter = produccion.ElementAt(0);
-                    if(Char.IsLower(caracter) == false && caracter.Equals(LAMBDA) == false) //si es una letra minuscula o lambda
+                    /*
+                     * Si es una letra minuscula o lambda
+                     */
+                    if (Char.IsLower(caracter) == false && caracter.Equals(LAMBDA) == false) 
                     {
                         respuesta = false;
                     }
@@ -505,7 +568,10 @@ namespace FNC
                 {
                     char caracter1 = produccion.ElementAt(0);
                     char caracter2 = produccion.ElementAt(1);
-                    if(Char.IsUpper(caracter1) == false || Char.IsUpper(caracter2) == false) //si ambas son mayusculas (variables)
+                    /*
+                     * Si ambas son mayusculas (variables)
+                     */
+                    if (Char.IsUpper(caracter1) == false || Char.IsUpper(caracter2) == false) 
                     {
                         respuesta = false;
                     }
@@ -519,26 +585,30 @@ namespace FNC
             return respuesta;
         }
 
-        /// <summary>
-        /// Determina si la regla contiene una produccion pasada como parametro
-        /// </summary>
-        /// <param name="prod">
-        /// String que representa la produccion
-        /// </param>
-        /// <returns>
-        /// Retorna true si la regla contiene la produccion. En caso contrario, retorna false.
-        /// </returns>
+        /* 
+         * <summary>
+         * Determina si la regla contiene una produccion pasada como parametro
+         * </summary>
+         * <param name="prod">
+         * String que representa la produccion
+         * </param>
+         * <returns>
+         * Retorna true si la regla contiene la produccion. En caso contrario, retorna false.
+         * </returns>
+         */
         public bool contieneProduccion(string prod)
         {
             return producciones.Contains(prod);
         }
 
-        /// <summary>
-        /// Genera una cadena de texto que representa este objeto Regla
-        /// </summary>
-        /// <returns>
-        /// String que representa este objeto Regla.
-        /// </returns>
+        /*
+         * <summary>
+         * Genera una cadena de texto que representa este objeto Regla
+         * </summary>
+         * <returns>
+         * String que representa este objeto Regla.
+         * </returns>
+         */
         public override string ToString()
         {
             string cadena = generador + " -> ";
@@ -563,23 +633,27 @@ namespace FNC
         }
     }
 
-    /// <summary>
-    /// Extensiones
-    /// </summary>
+    /* 
+     * <summary>
+     * Extensiones
+     * </summary>
+     */
     public static class MisExtensiones
     {
-        /// <summary>
-        /// Metodo que permite eliminar un caracter de una cadena dando su posicion
-        /// </summary>
-        /// <param name="str">
-        /// cadena de texto
-        /// </param>
-        /// <param name="pos">
-        /// entero que representa la posicion en la cual se encuentra el caracter a eliminar
-        /// </param>
-        /// <returns>
-        /// cadena de texto sin el caracter.
-        /// </returns>
+        /*
+         * <summary>
+         * Metodo que permite eliminar un caracter de una cadena dando su posicion
+         * </summary>
+         * <param name="str">
+         * cadena de texto
+         * </param>
+         * <param name="pos">
+         * entero que representa la posicion en la cual se encuentra el caracter a eliminar
+         * </param>
+         * <returns>
+         * cadena de texto sin el caracter.
+         * </returns>
+         */
         public static string RemoveAt(this String str, int pos)
         {
             string cadena = "";

@@ -6,11 +6,17 @@ using System.Windows.Forms;
 
 namespace FNC
 {
+    /*
+     * Clase que representa la grámatica de chomsky
+     * @autor Christian Alberto Tamayo Robayo, Jhonnatan Bellaiza Caicedo, Cesar Botina
+     */
     static class Program
     {
-        /// <summary>
-        /// Punto de entrada principal para la aplicación.
-        /// </summary>
+        /*
+         * <summary>
+         * Punto de entrada principal para la aplicación.
+         * </summary>
+         */
         [STAThread]
         static void Main()
         {

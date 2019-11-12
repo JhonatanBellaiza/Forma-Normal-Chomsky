@@ -10,6 +10,10 @@ using System.Windows.Forms;
 
 namespace FNC
 {
+    /*
+     * Clase que representa la grámatica de chomsky
+     * @autor Christian Alberto Tamayo Robayo, Jhonnatan Bellaiza Caicedo, Cesar Botina
+     */
     public partial class VentanaPrincipal : Form
     {
         private Gramatica g;
@@ -32,7 +36,9 @@ namespace FNC
 
         }
 
-        //Al presionar este boton se carga la gramatica
+        /*
+         * Al presionar este boton se carga la gramatica
+         */
         private void butPaso1_Click(object sender, EventArgs e)
         {
             if(txtEntrada.Text.Trim().Count() > 0)
@@ -76,7 +82,9 @@ namespace FNC
 
         private void butPaso2_Click(object sender, EventArgs e)
         {
-            //Si llego a este paso es que la gramatica ya esta creada
+            /*
+             * Si se llega a este paso es porque la gramatica ya esta creada
+             */
             List<char> noAlcanzables = g.darNoAlcanzables();
 
             string cadena = "ninguna";
@@ -122,7 +130,9 @@ namespace FNC
             butPaso3.Enabled = false;
             butPaso4.Enabled = true;
 
-            //agrego elementos al comboBox
+            /*
+             * Se agregan elementos al comboBox
+             */
             foreach(char variable in g.darGeneradores())
             {
                 comboBoxConjunto.Items.Add(variable);
@@ -169,8 +179,13 @@ namespace FNC
             }
             catch(Exception)
             {
-                //El unico error que se puede producir en esta fase, es que no hayan 
-                //suficientes variables para obtener producciones binarias
+                /************************************
+                 **********NOTA IMPORTANTE***********
+                 ************************************
+                 *
+                 * El unico error que se puede producir en esta fase, es que no hayan 
+                 * suficientes variables para obtener producciones binarias.
+                 */
                 MessageBox.Show("No hay suficientes variables en el abecedario para generar " +
                     "producciones binarias con esta gramatica");
                 limpiar();      
@@ -191,8 +206,13 @@ namespace FNC
             }
             catch(Exception)
             {
-                //El unico error que se puede producir en esta fase, es que no hayan 
-                //suficientes variables para obtener producciones binarias
+                /************************************
+                 **********NOTA IMPORTANTE***********
+                 ************************************
+                 *
+                 * El unico error que se puede producir en esta fase, es que no hayan 
+                 * suficientes variables para obtener producciones binarias.
+                 */
                 MessageBox.Show("No hay suficientes variables en el abecedario para generar " +
                     "producciones binarias con esta gramatica");
                 limpiar();

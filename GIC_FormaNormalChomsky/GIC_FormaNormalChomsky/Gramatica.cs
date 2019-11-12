@@ -6,51 +6,69 @@ using System.Threading.Tasks;
 
 namespace FNC
 {
-    /// <summary>
-    /// Clase que representa una gramatica
-    /// </summary>
+    /*
+     * Clase que representa la grámatica de chomsky
+     * @autor Christian Alberto Tamayo Robayo, Jhonnatan Bellaiza Caicedo, Cesar Botina
+     */
     public class Gramatica
     {
-        //ATRIBUTOS --------------------------------------------------------------------------------
+        /**************************
+         *********ATRIBUTOS********
+         **************************/
 
-        //Reglas de la gramatica
+        /*
+         *Lista que contiene las reglas de la grámatica
+         */
         public List<Regla> reglas;
         
-        //Representa todas las variables utilizadas.
+        /*
+         *Lista que contiene todas las variables utilizadas
+         */
         public List<char> variables;
 
-        //terminales en la gramatica
+        /*
+         * Lista que contiene todas terminales en la gramatica
+         */
         public List<char> terminales;
 
-        //variables posibles
+        /*
+         * Lista que contiene las variables posibles en la GIC
+         */
         public List<char> variablesPosibles = new List<char>(){ 'A','B','C', 'D', 'E','F','G','H','I','J','K','L','M',
              'N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
-        //nuevas reglas que se generan en el proceso de obtener producciones binarias
+        /*
+         * Lista que representa las nuevas reglas que se generan en el proceso de obtener producciones binarias
+         */
         public List<Regla> nuevasReglas = new List<Regla>();
 
-        //matriz de resultado al aplicar el algoritmo CYK sobre una cadena
+        /*
+         * Lista con la matriz de resultado al aplicar el algoritmo CYK sobre una cadena
+         */
         public List<string>[,] matriz;
+        /*****************************
+         *********CONSTRUCTOR*********
+         *****************************/
 
-        //CONSTRUCTOR --------------------------------------------------------------------------------
-        /// <summary>
-        /// Genera un objeto Gramatica a partir de una cadena de texto que contiene la gramatica expresada en 
-        /// un formato como el siguiente:
-        /// S : aXbX
-        /// X : aY | bY | &
-        /// Y : X | c
-        /// </summary>
-        /// <param name="texto">
-        /// Cadena de texto con la gramatica
-        /// </param>
-        /// <exception cref="System.Exception">
-        /// Lanza excepciones en los casos siguientes:
-        /// CASO 1: Regla no respeta el formato de separacion por ":"
-        /// CASO 2: La parte izquierda de una regla es mas de un caracter (tamaño mayor a 1)
-        /// CASO 3: La parte izquierda de una regla no es una letra mayuscula
-        /// CASO 4: Una produccion contiene un caracter que no es un terminal, variable o labmda
-        /// CASO 5: Una produccion contiene labmda y mas caracteres.
-        /// </exception>
+        /*
+        * Genera un objeto Gramatica a partir de una cadena de texto que contiene la gramatica expresada en 
+        * un formato como el siguiente:
+        * S : aXbX
+        * X : aY | bY | &
+        * Y : X | c
+        * </summary>
+        * <param name="texto">
+        * Cadena de texto con la gramatica
+        * </param>
+        * <exception cref="System.Exception">
+        * Lanza excepciones en los casos siguientes:
+        * CASO 1: Regla no respeta el formato de separacion por ":"
+        * CASO 2: La parte izquierda de una regla es mas de un caracter (tamaño mayor a 1)
+        * CASO 3: La parte izquierda de una regla no es una letra mayuscula
+        * CASO 4: Una produccion contiene un caracter que no es un terminal, variable o labmda
+        * CASO 5: Una produccion contiene labmda y mas caracteres.
+        * </exception>
+        */
         public Gramatica(string texto)
         {
             reglas = new List<Regla>();
@@ -65,8 +83,9 @@ namespace FNC
                 if (linea != null && linea.Trim().Count() != 0)
                 {
                     linea = linea.Replace(" ", "");
-
-                    //VERIFICACION 1
+                    /*
+                     *VERIFICACION 1
+                     */
                     String[] partes = linea.Split(':');
                     if (partes.Length != 2)
                     {
@@ -77,21 +96,25 @@ namespace FNC
                     {
                         throw new Exception("La parte izquierda de una regla debe ser un caracter");
                     }
-
-                    //VERIFICACION 2
+                    /*
+                     *VERIFICACION 2
+                     */
                     char generador = partes[0].ElementAt(0);
                     if(generador < 'A' || generador > 'Z' || generador.Equals(Regla.LAMBDA))
                     {
                         throw new Exception("El generador debe ser una letra mayuscula");
                     }
-
-                    //VERIFICACION 3
+                    /*
+                     *VERIFICACION 3
+                     */
                     string[] producciones = partes[1].Split('|');  
                     for (int j = 0; j < producciones.Count(); j++)
                     {
-                        string prod = producciones.ElementAt(j).Trim(); //quito espacios en blanco que pueden quedar
+                        string prod = producciones.ElementAt(j).Trim(); //Se quitan espacios en blanco que puedan quedar
                  
-                        //examino cada caracter de la produccion 
+                        /*
+                         * examino cada caracter de la produccion 
+                         */
                         for(int z = 0; z < prod.Count(); z++)
                         {
                             char c = prod.ElementAt(z);
@@ -131,7 +154,9 @@ namespace FNC
                         producciones[j] = prod;
                     }
 
-                    //si llego hasta aqui es que no hubo ningun problema con el formato
+                    /*
+                     * si llego hasta aqui es que no hubo ningun problema con el formato
+                     */
                     Regla nueva = new Regla(generador, producciones.ToList<string>());
                     reglas.Add(nueva);
 
@@ -146,19 +171,23 @@ namespace FNC
             }
         }
 
-       //METODOS ------------------------------------------------------------------------------------------
+       /***************************
+        **********METODOS**********
+        ***************************/
 
-       /// <summary>
-       /// Obtiene las variables terminables de la gramatica
-       /// </summary>
-       /// <returns>
-       /// Retorna una lista con las variables terminables
-       /// </returns>
+       /* <summary>
+       * Obtiene las variables terminables de la gramatica
+       * </summary>
+       * <returns>
+       * Retorna una lista con las variables terminables
+       * </returns>
+       */
         public List<char> darTerminables()
         {
             List<char> terminables = new List<char>();
-
-            //inicializacion
+            /*
+            *inicializacion
+            */
             foreach(Regla regla in reglas)
             {
                 if(regla.esTerminablePorProduccion() == true)
@@ -167,7 +196,9 @@ namespace FNC
                 }
             }
 
-            //repeticion hasta que no haya cambios
+            /*
+             * repeticion hasta que no haya cambios
+             */
             bool cambio = true;
             while(cambio)
             {
@@ -194,12 +225,14 @@ namespace FNC
             return terminables;
         }
 
-        /// <summary>
-        /// Obtiene las variables no terminables de la gramatica
-        /// </summary>
-        /// <returns>
-        /// Retorna una lista con las variables no terminables
-        /// </returns>
+        /*
+         *<summary>
+         * Obtiene las variables no terminables de la gramatica
+         * </summary>
+         * <returns>
+         * Retorna una lista con las variables no terminables
+         * </returns>
+         */
         public List<char> darNoTerminables()
         {
             List<char> generadores = darGeneradores();
@@ -207,12 +240,13 @@ namespace FNC
             return generadores.Except(darTerminables()).ToList<char>();
         }
 
-        /// <summary>
-        /// Obtiene las variables alcanzables de la gramatica
-        /// </summary>
-        /// <returns>
-        /// Retorna una lista con las variables alcanzables
-        /// </returns>
+        /*<summary>
+         *Obtiene las variables alcanzables de la gramatica
+         *</summary>
+         *<returns>
+         *Retorna una lista con las variables alcanzables
+         *</returns>
+         */
         public List<char> darAlcanzables()
         {
             //inicializacion
@@ -246,12 +280,14 @@ namespace FNC
             return alcanzables;
         }
 
-        /// <summary>
-        /// Obtiene las variables no alcanzables de la gramatica
-        /// </summary>
-        /// <returns>
-        /// Retorna una lista con las variables no alcanzables
-        /// </returns>
+        /*
+         * <summary>
+         * Obtiene las variables no alcanzables de la gramatica
+         * </summary>
+         * <returns>
+         * Retorna una lista con las variables no alcanzables
+         * </returns>
+         */
         public List<char> darNoAlcanzables()
         {
             List<char> generadores = darGeneradores();
@@ -259,17 +295,21 @@ namespace FNC
             return generadores.Except(darAlcanzables()).ToList<char>();
         }
 
-        /// <summary>
-        /// Obtiene las variables anulables de la gramatica
-        /// </summary>
-        /// <returns>
-        /// Retorna una lista con las variables anulables
-        /// </returns>
+        /*
+         * <summary>
+         * Obtiene las variables anulables de la gramatica
+         * </summary>
+         * <returns>
+         * Retorna una lista con las variables anulables
+         * </returns>
+         */
         public List<char> darAnulables()
         {
             List<char> anulables = new List<char>();
 
-            //inicializacion
+            /*
+             * inicializacion
+             */
             foreach(Regla regla in reglas)
             {
                 if(regla.esAnuablePorProduccion() == true)
@@ -278,7 +318,9 @@ namespace FNC
                 }
             }
 
-            //repeticion hasta que no haya cambios
+            /*
+             * repeticion hasta que no haya cambios
+             */
             bool cambio = true;
             while (cambio)
             {
@@ -303,22 +345,28 @@ namespace FNC
             return anulables;
         }
 
-        /// <summary>
-        /// Obtiene el conjunto unitario de una variable
-        /// </summary>
-        /// <param name="generador">
-        /// Representa la variable a la cual se calcula el conjunto unitario
-        /// </param>
-        /// <returns>
-        /// Una lista con las variables pertenecientes al conjunto unitario de la variable pasada como parametro
-        /// </returns>
+        /*
+         * <summary>
+         * Obtiene el conjunto unitario de una variable
+         * </summary>
+         * <param name="generador">
+         * Representa la variable a la cual se calcula el conjunto unitario
+         * </param>
+         * <returns>
+         * Una lista con las variables pertenecientes al conjunto unitario de la variable pasada como parametro
+         * </returns>
+         */
         public List<char> darConjuntoUnitario(char generador)
         { 
-            //inicializacion
+            /*
+             * inicializacion
+             */
             List<char> conjunto = new List<char>() { generador };
             List<char> yaEstudiado = new List<char>();
 
-            //repeticion hasta que no haya cambios
+            /*
+             * repeticion hasta que no haya cambios
+             */
             bool cambio = true;
             while(cambio)
             {
@@ -346,13 +394,15 @@ namespace FNC
             return conjunto;
         }
 
-        /// <summary>
-        /// Obtiene todas las variables que actuan como generadores. Una variable actua como generador si tiene
-        /// una regla asociada.
-        /// </summary>
-        /// <returns>
-        /// Una lista con todas las variables de la gramatica que tienen una regla asociada (actuan como generadores)
-        /// </returns>
+        /*
+         * <summary>
+         * Obtiene todas las variables que actuan como generadores. Una variable actua como generador si tiene
+         * una regla asociada.
+         * </summary>
+         * <returns>
+         * Una lista con todas las variables de la gramatica que tienen una regla asociada (actuan como generadores)
+         * </returns>
+         */
         public List<char> darGeneradores()
         {
             List<char> respuesta = new List<char>();
@@ -365,15 +415,17 @@ namespace FNC
             return respuesta;
         }
 
-        /// <summary>
-        /// Obtiene la regla asociada a una variable
-        /// </summary>
-        /// <param name="generador">
-        /// Representa la variable de la cual se quiere obtener su regla
-        /// </param>
-        /// <returns>
-        /// Un objeto Regla que representa la regla asociada a la variable pasada como parametro
-        /// </returns>
+        /*
+         * <summary>
+         * Obtiene la regla asociada a una variable
+         * </summary>
+         * <param name="generador">
+         * Representa la variable de la cual se quiere obtener su regla
+         * </param>
+         * <returns>
+         * Un objeto Regla que representa la regla asociada a la variable pasada como parametro
+         * </returns>
+         */
         public Regla darRegla(char generador)
         {
             var busqueda = reglas.Where(r => r.generador.Equals(generador));
@@ -389,10 +441,12 @@ namespace FNC
             }
         }
 
-        /// <summary>
-        /// Metodo que elimina todas las variables no terminables de la gramatica.
-        /// Al eliminar una variable no terminable se pierde su regla asociada y todas las producciones que la contenian
-        /// </summary>
+        /*
+         * <summary>
+         * Metodo que elimina todas las variables no terminables de la gramatica.
+         * Al eliminar una variable no terminable se pierde su regla asociada y todas las producciones que la contenian
+         * </summary>
+         */
         public void eliminarNoTerminables()
         {
             List<char> terminables = darTerminables();
@@ -421,10 +475,12 @@ namespace FNC
             }
         }
 
-        /// <summary>
-        /// Metodo que elimina todas las variables no alcanzables de la gramatica.
-        /// Al eliminar una variable no alcanzable se pierde su regla asociada y todas las producciones que la contenian
-        /// </summary>
+        /*
+         * <summary>
+         * Metodo que elimina todas las variables no alcanzables de la gramatica.
+         * Al eliminar una variable no alcanzable se pierde su regla asociada y todas las producciones que la contenian
+         * </summary>
+         */
         public void eliminarNoAlcanzables()
         {
             List<char> alcanzables = darAlcanzables();
@@ -434,7 +490,9 @@ namespace FNC
 
             foreach (char noAlc in noAlcanzables)
             {
-                //eliminar la regla
+                /*
+                 * eliminar la regla
+                 */
                 Regla regla = darRegla(noAlc);
                 if (regla != null)
                 {
@@ -442,7 +500,9 @@ namespace FNC
                 }
             }
 
-            //En cada regla eliminar producciones que contengan variables NO Alcanzables
+            /*
+             * En cada regla eliminar producciones que contengan variables NO Alcanzables
+             */
             foreach (Regla rule in reglas)
             {
                 rule.eliminarProduccionesConLasVariables(noAlcanzables);
@@ -456,9 +516,11 @@ namespace FNC
 
         }
 
-        /// <summary>
-        /// Metodo que elimina y simula, añadiendo nuevas producciones, todas las producciones labmda.
-        /// </summary>
+        /* 
+         * <summary>
+         * Metodo que elimina y simula, añadiendo nuevas producciones, todas las producciones labmda.
+         * </summary>
+         */
         public void eliminarProduccionesLambda()
         {
             List<char> anulables = darAnulables();
@@ -470,9 +532,11 @@ namespace FNC
             }
         }
 
-        /// <summary>
-        /// Metodo que elimina y simula, añadiendo nuevas producciones, todas las producciones unitarias
-        /// </summary>
+        /* 
+         * <summary>
+         * Metodo que elimina y simula, añadiendo nuevas producciones, todas las producciones unitarias
+         * </summary>
+         */
         public void eliminarProduccionesUnitarias()
         {
             List<char> generadores = darGeneradores();
@@ -500,37 +564,42 @@ namespace FNC
         }
 
 
-        /// <summary>
-        /// Toda produccion con tamaño mayor a 1 y que contenga un terminal, debe reemplazar dicho terminal por
-        /// una variable. Este metodo realiza esta tarea teniendo como recurso las variables posibles y las variables
-        /// hasta el momento utilizadas.
-        /// Se añaden nuevas reglas con el formato (variable nueva -> terminal reemplazado)
-        /// </summary>
+        /* 
+         * <summary>
+         * Toda produccion con tamaño mayor a 1 y que contenga un terminal, debe reemplazar dicho terminal por
+         * una variable. Este metodo realiza esta tarea teniendo como recurso las variables posibles y las variables
+         * hasta el momento utilizadas.
+         * Se añaden nuevas reglas con el formato (variable nueva -> terminal reemplazado)
+         * </summary>
+         */
         public void generarVariablesPorCadaTerminal()
         {
             List<char> variablesPermitidas = variablesPosibles.Except(variables).ToList<char>(); //para asegurar
             int numeroDeReglas = reglas.Count();
 
-            //ASIGNACION
+            /*******************************
+             ***********ASIGNACION**********
+             *******************************/
             Dictionary<char, char> asignaciones = new Dictionary<char, char>();       
             for(int i = 0; i < terminales.Count(); i++)
             {
                 char terminal = terminales.ElementAt(i);
                 char variableAsignada = variablesPermitidas.ElementAt(i);
 
-                //asignacion
+                /*
+                 * asignacion
+                 */
                 asignaciones.Add(terminal, variableAsignada);
-                //aumento variables
+                /*
+                 * Aumento de las variables
+                 */ 
                 variables.Add(variableAsignada);
                 variablesPosibles.Remove(variableAsignada);
-               
-                //creo la regla nueva
-                //Regla regla = new Regla(variableAsignada, new List<string>() { terminal.ToString() });
-                //reglas.Add(regla);
-                //nuevasReglas.Add(regla);
             }
             
-            //MODIFICO PRODUCCIONES DE CADA REGLA
+            /*******************************************************
+             **********MODIFICO PRODUCCIONES DE CADA REGLA**********
+             *******************************************************/
             for(int y = 0; y < numeroDeReglas; y++)
             {
                 Regla reg = reglas.ElementAt(y);
@@ -569,9 +638,11 @@ namespace FNC
             }   
         }
 
-        /// <summary>
-        /// Convierte cada produccion de una regla en una produccion binaria
-        /// </summary>
+        /* 
+         * <summary>
+         * Convierte cada produccion de una regla en una produccion binaria
+         * </summary>
+         */
         public void generarProduccionesBinarias()
         {
             variablesPosibles = variablesPosibles.Except(variables).ToList<char>(); //para asegurar
@@ -590,12 +661,14 @@ namespace FNC
             
         }
 
-        /// <summary>
-        /// Determina si todas las reglas de la gramatica tienen sus producciones en forma binaria.
-        /// </summary>
-        /// <returns>
-        /// Retorna true si todas las reglas tienen sus producciones en forma binaria. En caso contrario, retorna false
-        /// </returns>
+        /*
+         * <summary>
+         * Determina si todas las reglas de la gramatica tienen sus producciones en forma binaria.
+         * </summary>
+         * <returns>
+         * Retorna true si todas las reglas tienen sus producciones en forma binaria. En caso contrario, retorna false
+         * </returns>
+         */
         public bool todasLasReglasSonBinarias()
         {
             bool respuesta = true;
@@ -610,18 +683,20 @@ namespace FNC
         }
 
 
-        /// <summary>
-        /// Busca sobre las nuevas reglas generadas (que son unitarias, en el sentido que solo tienen una produccion), 
-        /// una regla que tenga al parametro como produccion.
-        /// Las nuevas reglas generadas estan representadas por el atributo nuevasReglas.
-        /// </summary>
-        /// <param name="prod">
-        /// String que representa una produccion
-        /// </param>
-        /// <returns>
-        /// Retorna la regla que tiene como produccion al parametro. En caso de que no encuentre ninguna regla,
-        /// retorna null.
-        /// </returns>
+        /*
+         * <summary>
+         * Busca sobre las nuevas reglas generadas (que son unitarias, en el sentido que solo tienen una produccion), 
+         * una regla que tenga al parametro como produccion.
+         * Las nuevas reglas generadas estan representadas por el atributo nuevasReglas.
+         * </summary>
+         * <param name="prod">
+         * String que representa una produccion
+         * </param>
+         * <returns>
+         * Retorna la regla que tiene como produccion al parametro. En caso de que no encuentre ninguna regla,
+         * retorna null.
+         * </returns>
+         */
         public Regla reglaUnitariaConProduccion(string prod)
         {
             Regla buscada = null;
@@ -640,17 +715,19 @@ namespace FNC
             return buscada;
         }
 
-     
 
-        /// <summary>
-        /// Obtiene las variables que en su regla asociada producen alguna de las producciones pasadas como parametro
-        /// </summary>
-        /// <param name="producciones">
-        /// Lista de string que representa las producciones
-        /// </param>
-        /// <returns>
-        /// Una lista de string con las variables
-        /// </returns>
+
+        /*
+         * <summary>
+         * Obtiene las variables que en su regla asociada producen alguna de las producciones pasadas como parametro
+         * </summary>
+         * <param name="producciones">
+         * Lista de string que representa las producciones
+         * </param>
+         * <returns>
+         * Una lista de string con las variables
+         * </returns>
+         */
         public List<string> darGeneradoresDeAlMenosUnaDeLasProducciones(List<string> producciones)
         {
             List<string> respuesta = new List<string>();
@@ -673,19 +750,21 @@ namespace FNC
             return respuesta;
         }
 
-        /// <summary>
-        /// Genera producciones a partir de dos listas cuyo contenido son variables. Metodo utilizado en el metodo
-        /// que implementa el algorito CYK.
-        /// </summary>
-        /// <param name="lista1">
-        /// Lista de string
-        /// </param>
-        /// <param name="lista2">
-        /// Lista de string
-        /// </param>
-        /// <returns>
-        /// Retorna una lista de string con las nuevas producciones
-        /// </returns>
+        /*
+         * <summary>
+         * Genera producciones a partir de dos listas cuyo contenido son variables. Metodo utilizado en el metodo
+         * que implementa el algorito CYK.
+         * </summary>
+         * <param name="lista1">
+         * Lista de string
+         * </param>
+         * <param name="lista2">
+         * Lista de string
+         * </param>
+         * <returns>
+         * Retorna una lista de string con las nuevas producciones
+         * </returns>
+         */
         public List<string> generarPosiblesProducciones(List<string> lista1, List<string> lista2)
         {
             List<string> respuesta = new List<string>();
@@ -717,12 +796,14 @@ namespace FNC
         }
 
 
-        /// <summary>
-        /// Genera una cadena de texto que representa este objeto Gramatica
-        /// </summary>
-        /// <returns>
-        /// Un string que representa este objeto Gramatica
-        /// </returns>
+        /*
+         * <summary>
+         * Genera una cadena de texto que representa este objeto Gramatica
+         * </summary>
+         * <returns>
+         * Un string que representa este objeto Gramatica
+         * </returns>
+         */
         public override string ToString()
         { 
             string cadena = "";
