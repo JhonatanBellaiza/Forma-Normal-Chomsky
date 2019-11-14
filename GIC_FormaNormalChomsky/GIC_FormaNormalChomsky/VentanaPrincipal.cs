@@ -272,5 +272,20 @@ namespace FNC
         {
 
         }
+
+        private void PictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Label16_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PictureBox1_Click_1(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

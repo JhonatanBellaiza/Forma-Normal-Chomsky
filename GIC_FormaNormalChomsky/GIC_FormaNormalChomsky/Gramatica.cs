@@ -46,6 +46,7 @@ namespace FNC
          * Lista con la matriz de resultado al aplicar el algoritmo CYK sobre una cadena
          */
         public List<string>[,] matriz;
+
         /*****************************
          *********CONSTRUCTOR*********
          *****************************/
@@ -69,6 +70,7 @@ namespace FNC
         * CASO 5: Una produccion contiene labmda y mas caracteres.
         * </exception>
         */
+
         public Gramatica(string texto)
         {
             reglas = new List<Regla>();
